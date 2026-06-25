@@ -1,0 +1,84 @@
+{
+    "$schema": "config_schema.json",
+    "configName": "conf_0",
+    "outputJson": "output.json",
+    "duration": 0.02,
+    "videoFPS": 60,
+    "maxFramesInFlight": 5,
+    "sphereStacks": 8,
+    "sphereSectors": 16,
+    "objInstancing": false,
+    "reconResolution": 200,
+    "useOffScreenRendering": true,
+    "deltaTime": 0.002,
+    "fluidProperties": {
+        "density": 1000,
+        "viscosity": 0.001,
+        "flipRatio": 0.95,
+        "pressureSolverType": "jacobi",
+        "useNarrowBand": true
+    },
+    "numParticles": 100000,
+    "deviceId": 0,
+    "num_iterations": 2,
+    "environment": {
+        "externalForce": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "time_start": 0,
+            "time_end": 0
+        },
+        "numberOfSphere": 4,
+        "initialVelocities": [
+            {
+                "x": 2.0,
+                "y": 0,
+                "z": 0
+            },
+            {
+                "x": -2.0,
+                "y": -0.5,
+                "z": 0
+            },
+            {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            {
+                "x": 0,
+                "y": 30,
+                "z": 0
+            }
+        ]
+    },
+    "gridSize": {
+        "x": 25,
+        "y": 25,
+        "z": 25,
+        "cellSize": 0.04
+    },
+    "particleSpacing": 0.02,
+    "spacing": 0.08,
+    "radius_percentage": 0.4,
+    "jitter": 0.1,
+    "output": {
+        "name": "fluid_simulation_output_finals_2_mesh_recon_2_spacing_0.08_gs.mp4",
+        "output_type": "video",
+        "preset": "veryfast"
+    },
+    "meshReconstruction": {
+        "reconRadiusInSpacings": 20.56,
+        "reconSupportScale":2.0,
+        "mcIsovalue": 0.06,
+        "reconParams": {
+            "anisotropic": false,
+            "smoothing": false,
+            "lambda": 0.9,
+            "kr": 4.0,
+            "kn": 0.8,
+            "nEps": 25
+        }
+    }
+}

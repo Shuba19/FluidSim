@@ -1,0 +1,366 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://www.my-schema.com/change_phase_schema.json",
+    "title": "ConfigSchema",
+    "description": "JSON Schema for the configuration of the fluid simulation",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "The URI of the JSON Schema that this configuration should adhere to"
+        },
+        "configName": {
+            "type": "string",
+            "description": "The name of the configuration file"
+        },
+        "outputJson": {
+            "type": "string",
+            "description": "The path to the output JSON file"
+        },
+        "duration": {
+            "type": "number",
+            "description": "The total duration of the simulation in seconds",
+            "minimum": 0
+        },
+        "videoFPS": {
+            "type": "integer",
+            "description": "The frames per second for the output video",
+            "minimum": 1
+        },
+        "maxFramesInFlight": {
+            "type": "integer",
+            "description": "The maximum number of frames to keep in flight for rendering",
+            "minimum": 1
+        },
+        "sphereStacks": {
+            "type": "integer",
+            "description": "The number of stacks for the sphere representation of particles",
+            "minimum": 1
+        },
+        "sphereSectors": {
+            "type": "integer",
+            "description": "The number of sectors for the sphere representation of particles",
+            "minimum": 1
+        },
+        "objInstancing": {
+            "type": "boolean",
+            "description": "Whether to use object instancing for rendering particles or scalar fields"
+        },
+        "reconResolution": {
+            "type": "integer",
+            "description": "The resolution for the mesh reconstruction",
+            "minimum": 1
+        },
+        "useOffScreenRendering": {
+            "type": "boolean",
+            "description": "Whether to use off-screen rendering for the simulation"
+        },
+        "deltaTime": {
+            "type": "number",
+            "description": "The time step for the simulation in seconds",
+            "minimum": 0
+        },
+        "fluidProperties": {
+            "type": "object",
+            "properties": {
+                "density": {
+                    "type": "number",
+                    "description": "The density of the fluid",
+                    "minimum": 0
+                },
+                "viscosity": {
+                    "type": "number",
+                    "description": "The viscosity of the fluid",
+                    "minimum": 0
+                },
+                "flipRatio": {
+                    "type": "number",
+                    "description": "The FLIP ratio for the fluid simulation",
+                    "minimum": 0,
+                    "maximum": 1
+                },
+                "pressureSolverType": {
+                    "enum": [
+                        "jacobi",
+                        "gs",
+                        "multigrid"
+                    ],
+                    "description": "The type of pressure solver to use for the fluid simulation"
+                },
+                "useNarrowBand": {
+                    "type": "boolean",
+                    "description": "Whether to use a narrow band for the fluid simulation"
+                }
+            },
+            "required": [
+                "density",
+                "viscosity",
+                "flipRatio",
+                "pressureSolverType",
+                "useNarrowBand"
+            ]
+        },
+        "numParticles": {
+            "type": "integer",
+            "description": "The number of particles in the simulation",
+            "minimum": 1
+        },
+        "environment": {
+            "type": "object",
+            "description": "The environment to use for the simulation, including intial velocity and external forces",
+            "properties": {
+                "externalForce": {
+                    "type": "object",
+                    "properties": {
+                        "x": {
+                            "type": "number",
+                            "description": "The external force in the x direction"
+                        },
+                        "y": {
+                            "type": "number",
+                            "description": "The external force in the y direction"
+                        },
+                        "z": {
+                            "type": "number",
+                            "description": "The external force in the z direction"
+                        },
+                        "time_start": {
+                            "type": "number",
+                            "description": "The time at which the external force starts to be applied"
+                        },
+                        "time_end": {
+                            "type": "number",
+                            "description": "The time at which the external force stops being applied"
+                        }
+                    },
+                    "required": [
+                        "x",
+                        "y",
+                        "z",
+                        "time_start",
+                        "time_end"
+                    ]
+                },
+                "numberOfSphere": {
+                    "type": "integer",
+                    "description": "The number of spheres to use for the simulation",
+                    "minimum": 1
+                },
+                "initialVelocities": {
+                    "type": "array",
+                    "description": "For each sphere in the simulation, specify the initial velocity as an object with x, y, and z components, it is mandatory to provide initial velocities for all spheres in the simulation",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "x": {
+                                "type": "number",
+                                "description": "The initial velocity in the x direction"
+                            },
+                            "y": {
+                                "type": "number",
+                                "description": "The initial velocity in the y direction"
+                            },
+                            "z": {
+                                "type": "number",
+                                "description": "The initial velocity in the z direction"
+                            }
+                        },
+                        "required": [
+                            "x",
+                            "y",
+                            "z"
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "initialVelocities",
+                "externalForce",
+                "numberOfSphere"
+            ]
+        },
+        "deviceId": {
+            "type": "integer",
+            "description": "The ID of the GPU device to use for the simulation",
+            "minimum": 0
+        },
+        "num_iterations": {
+            "type": "integer",
+            "description": "The number of iterations for the simulation, typical values are 30 for jacobi, 20 for gs, and 3 for multigrid",
+            "minimum": 1
+        },
+        "gridSize": {
+            "type": "object",
+            "properties": {
+                "x": {
+                    "type": "integer",
+                    "description": "The size of the grid in the x dimension",
+                    "minimum": 1
+                },
+                "y": {
+                    "type": "integer",
+                    "description": "The size of the grid in the y dimension",
+                    "minimum": 1
+                },
+                "z": {
+                    "type": "integer",
+                    "description": "The size of the grid in the z dimension",
+                    "minimum": 1
+                },
+                "cellSize": {
+                    "type": "number",
+                    "description": "The size of each cell in the grid",
+                    "minimum": 0
+                }
+            },
+            "required": [
+                "x",
+                "y",
+                "z",
+                "cellSize"
+            ]
+        },
+        "particleSpacing": {
+            "type": "number",
+            "description": "The spacing between particles",
+            "minimum": 0
+        },
+        "spacing": {
+            "type": "number",
+            "description": "The spacing between particles for neighbor search and other calculations",
+            "minimum": 0
+        },
+        "radius_percentage": {
+            "type": "number",
+            "description": "The percentage of the particle radius relative to the spacing",
+            "minimum": 0,
+            "maximum": 1
+        },
+        "jitter": {
+            "type": "number",
+            "description": "The amount of jitter to apply to particle positions",
+            "minimum": 0
+        },
+        "output": {
+            "type": "object",
+            "description": "output settings for the simulation",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The name of the output video file"
+                },
+                "output_type": {
+                    "type": "string",
+                    "description": "The type of output to generate (e.g., 'video', 'images', 'simulation_data'). 'video' will generate a mp4 video file, 'images' will generate a sequence of image files, and 'simulation_data' will save the raw simulation data for later analysis.",
+                    "enum": [
+                        "video",
+                        "images",
+                        "simulation_data"
+                    ]
+                    ,
+                "preset":{
+                    "type": "string",
+                    "description": "Optional libx264 encoding preset for the video output: faster presets cut encode time (so ffmpeg doesn't become the per-frame bottleneck) at the cost of larger files / slightly lower compression. Defaults to 'veryfast' when omitted.",
+                    "enum": ["ultrafast", "superfast", "veryfast", "faster", "fast", "medium", "slow", "slower", "veryslow"]
+                }
+                }
+            },
+            "required": [
+                "name",
+                "output_type",
+                "preset"
+            ]
+        },
+        "meshReconstruction": {
+            "type": "object",
+            "properties": {
+                "reconRadiusInSpacings": {
+                    "type": "number",
+                    "description": "The influence radius for the Zhu-Bridson reconstruction in terms of particle spacings",
+                    "minimum": 0
+                },
+                "reconSupportScale": {
+                    "type": "number",
+                    "description": "The scale factor for the support radius of the reconstruction kernel",
+                    "minimum": 0
+                },
+                "mcIsovalue": {
+                    "type": "number",
+                    "description": "The isovalue for the Marching Cubes algorithm during mesh extraction",
+                    "minimum": 0
+                },
+                "reconParams": {
+                    "type": "object",
+                    "properties": {
+                        "anisotropic": {
+                            "type": "boolean",
+                            "description": "Whether to use anisotropic reconstruction"
+                        },
+                        "smoothing": {
+                            "type": "boolean",
+                            "description": "Whether to apply smoothing during reconstruction"
+                        },
+                        "lambda": {
+                            "type": "number",
+                            "description": "The lambda parameter for the reconstruction",
+                            "minimum": 0
+                        },
+                        "kr": {
+                            "type": "number",
+                            "description": "The kr parameter for the reconstruction",
+                            "minimum": 0
+                        },
+                        "kn": {
+                            "type": "number",
+                            "description": "The kn parameter for the reconstruction",
+                            "minimum": 0
+                        },
+                        "nEps": {
+                            "type": "integer",
+                            "description": "The number of epsilon values for the reconstruction"
+                        }
+                    },
+                    "required": [
+                        "anisotropic",
+                        "smoothing",
+                        "lambda",
+                        "kr",
+                        "kn",
+                        "nEps"
+                    ]
+                }
+            },
+            "required": [
+                "reconRadiusInSpacings",
+                "reconSupportScale",
+                "mcIsovalue",
+                "reconParams"
+            ]
+        }
+    },
+    "required": [
+        "$schema",
+        "configName",
+        "outputJson",
+        "duration",
+        "videoFPS",
+        "maxFramesInFlight",
+        "sphereStacks",
+        "sphereSectors",
+        "reconResolution",
+        "useOffScreenRendering",
+        "deltaTime",
+        "fluidProperties",
+        "numParticles",
+        "environment",
+        "deviceId",
+        "num_iterations",
+        "gridSize",
+        "spacing",
+        "radius_percentage",
+        "jitter",
+        "output",
+        "meshReconstruction"
+    ]
+}
