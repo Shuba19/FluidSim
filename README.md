@@ -20,7 +20,7 @@ All the files regarding the configuration and implementation of Vulkan in our sy
 ### testResult
 We runned a suite of 54 test, compraing our framework with Taichi and SplashSurf.
 It is possible to see the full report of the test inside this folder.
-Config.md contains a table with the characteristcs of each config.
+Config.md contains a table with the characteristcs of each  config.
 report_performance.md the full report of the test.
 summary_table.md shows a summary of the result including geometric mean and avg speedup.
 
